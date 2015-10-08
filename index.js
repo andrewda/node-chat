@@ -29,8 +29,7 @@ var router = express.Router();
 var usernames = {};
 var numUsers = 0;
 
-function makeid() 
-{
+function makeid() {
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890-_";
 
