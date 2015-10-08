@@ -1,0 +1,10 @@
+{
+    "errors": {
+        "missing_params": "missing parameter(s)",
+        "message_length": "message too long",
+        "username_length": "username too long",
+        "invalid_id": "invalid id",
+        "name_taken": "username taken",
+        "user_unknown": "unknown user"
+    }
+}
