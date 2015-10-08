@@ -5,6 +5,7 @@
         "username_length": "username too long",
         "invalid_id": "invalid id",
         "name_taken": "username taken",
-        "user_unknown": "unknown user"
+        "user_unknown": "unknown user",
+        "invalid_status": "invalid status"
     }
 }

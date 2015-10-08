@@ -57,6 +57,33 @@ POST /api/send
 -------------------------------------------------------------
 
 
+POST /api/typing
+
+    ARGUMENTS
+    ==============
+    - id
+        - the id received from /api/login
+    - isTyping
+        - whether or not the "USERNAME is typing..." message should be displayed
+        - acceptable values: `true`, `false`, `1`, `0`
+    
+    RESULT
+    ==============
+    - success
+        - whether the request was successfull or not
+    - error (?)
+        if success = false, the error that occurred
+        
+    EXAMPLE RESULT
+    ==============
+    {
+      "success": true
+    }
+
+
+-------------------------------------------------------------
+
+
 POST /api/logout
 
     ARGUMENTS

@@ -105,7 +105,7 @@ io.on('connection', function(socket) {
         socket.username = query.username;
         usernames[query.username] = makeid();
         ++numUsers;
-        socket.broadcast.emit('user joined', {
+        io.emit('user joined', {
             username: socket.username,
             numUsers: numUsers
         });
@@ -126,7 +126,7 @@ io.on('connection', function(socket) {
         if (username !== undefined) {
             delete usernames[username];
             --numUsers;
-            socket.broadcast.emit('user left', {
+            io.emit('user left', {
                 username: username,
                 numUsers: numUsers
             });
@@ -136,6 +136,37 @@ io.on('connection', function(socket) {
         }
         
         res.json({ success: true, username: query.username });
+    });
+    
+    router.post('/typing', function(req, res) {
+        var query = res.req.client._httpMessage.req.query; //get the query
+        
+        if (query.id === undefined || query.id === '' || query.isTyping === undefined || query.isTyping === '') {
+            res.json({ success: false, error: options.errors.missing_params });
+            return;
+        }
+        
+        var username = usernames.getKeyByValue(query.id);
+        
+        if (username !== undefined) {
+            if (query.isTyping.toLowerCase() === 'true' || query.isTyping === '1') {
+                io.emit('typing', {
+                    username: username
+                });
+            } else if (query.isTyping.toLowerCase() === 'false' || query.isTyping === '0') {
+                io.emit('stop typing', {
+                    username: username
+                });
+            } else {
+                res.json({ success: false, error: options.errors.invalid_status });
+                return;
+            }
+        } else {
+            res.json({ success: false, error: options.errors.invalid_id });
+            return;
+        }
+        
+        res.json({ success: true });
     });
 
     socket.on('new message', function(data) {
