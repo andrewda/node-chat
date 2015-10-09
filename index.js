@@ -5,8 +5,6 @@ var io = require('socket.io')(server);
 var port = process.env.PORT || 3000;
 var fs = require('fs');
 
-var messages = [];
-
 var options = {};
 
 try {
@@ -26,6 +24,7 @@ String.prototype.trim = function() {
 app.use(express.static(__dirname + '/public'));
 var router = express.Router();
 
+var messages = [];
 var usernames = {};
 var numUsers = 0;
 
