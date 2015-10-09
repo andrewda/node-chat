@@ -1,7 +1,6 @@
 # node-chat API
 
-## /api/login
-### POST
+## POST /api/login
 ### ARGUMENTS
 #### username
 a name that the client will recognize you as
@@ -23,8 +22,7 @@ if success = false, the error that occurred
 }
 ```
 
-## /api/send
-### POST
+## POST /api/send
 ### ARGUMENTS
 #### id
 a name that the client will recognize you as
@@ -45,8 +43,7 @@ if success = false, the error that occurred
 }
 ```
 
-## /api/typing
-### POST
+## POST /api/typing
 ### ARGUMENTS
 #### id
 a name that the client will recognize you as
@@ -64,8 +61,7 @@ if success = false, the error that occurred
 }
 ```
 
-## /api/logout
-### POST
+## POST /api/logout
 ### ARGUMENTS
 #### id
 the id received from /api/login
