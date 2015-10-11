@@ -36,8 +36,9 @@ $(function() {
         var text = "";
         var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_!@#$%^&*";
     
-        for (var i = 0; i < 50; i++)
+        for (var i = 0; i < 50; i++) {
             text += possible.charAt(Math.floor(Math.random() * possible.length));
+        }
     
         return text;
     }
@@ -127,7 +128,7 @@ $(function() {
                 .addClass(typingClass)
                 .append($usernameDiv, $messageBodyDiv);
                 
-            if (blur && typingClass == '') {
+            if (blur && typingClass === '') {
                 document.title = "Message From: " + data.username;
             }
     
@@ -200,7 +201,7 @@ $(function() {
 
     //Check who is typing a message
     function getTypingMessages(data) {
-        return $('.typing.message').filter(function(i) {
+        return $('.typing.message').filter(function() {
             return $(this).data('username') === data.username;
         });
     }
