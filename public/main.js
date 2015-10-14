@@ -36,9 +36,8 @@ $(function() {
         var text = "";
         var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_!@#$%^&*";
     
-        for (var i = 0; i < 50; i++) {
+        for (var i = 0; i < 50; i++)
             text += possible.charAt(Math.floor(Math.random() * possible.length));
-        }
     
         return text;
     }
@@ -91,11 +90,19 @@ $(function() {
         
         if (message && connected) {
             $inputMessage.val('');
-            addChatMessage({
-                username: username,
-                message: message
-            });
 
+            if (message.split(" ")[0].toLowerCase() !== "/pm") {
+                addChatMessage({
+                    username: username,
+                    message: message
+                });
+            } else {
+                addChatMessage({
+                    username: username + " >> " + message.split(" ")[1],
+                    message: message.split("/pm " + message.split(" ")[1] + " ")[1]
+                });
+            }
+            
             socket.emit('new message', message);
         }
     }
@@ -128,7 +135,7 @@ $(function() {
                 .addClass(typingClass)
                 .append($usernameDiv, $messageBodyDiv);
                 
-            if (blur && typingClass === '') {
+            if (blur && typingClass == '') {
                 document.title = "Message From: " + data.username;
             }
     
@@ -201,7 +208,7 @@ $(function() {
 
     //Check who is typing a message
     function getTypingMessages(data) {
-        return $('.typing.message').filter(function() {
+        return $('.typing.message').filter(function(i) {
             return $(this).data('username') === data.username;
         });
     }
@@ -294,6 +301,12 @@ $(function() {
         }
         
         updateUsernames(data.usernames);
+    });
+    
+    socket.on('new pm', function(data) {
+        if (userid === data.to) {
+            addChatMessage(data);
+        }
     });
 
     //When a user leaves

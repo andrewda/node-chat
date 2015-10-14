@@ -5,6 +5,8 @@ var io = require('socket.io')(server);
 var port = process.env.PORT || 3000;
 var fs = require('fs');
 
+var messages = [];
+
 var options = {};
 
 try {
@@ -24,7 +26,6 @@ String.prototype.trim = function() {
 app.use(express.static(__dirname + '/public'));
 var router = express.Router();
 
-var messages = [];
 var usernames = {};
 var numUsers = 0;
 
@@ -48,6 +49,18 @@ Object.prototype.getKeyByValue = function(value) {
         }
     }
 };
+
+function isPM(message) {
+    if (message.split(" ")[0].toLowerCase() !== undefined) {
+        if (message.split(" ")[1] !== undefined && message.split(" ")[2] !== undefined) {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
 
 io.on('connection', function(socket) {
     var addedUser = false;
@@ -169,14 +182,22 @@ io.on('connection', function(socket) {
 
     socket.on('new message', function(data) {
         if (data.trim() !== undefined && data.trim() !== '') {
-            messages.push({
-                username: socket.username,
-                message: data
-            });
-            socket.broadcast.emit('new message', {
-                username: socket.username,
-                message: data
-            });
+            if (isPM(data)) {
+                socket.broadcast.emit('new pm', {
+                    to: usernames[data.split(" ")[1]],
+                    username: socket.username + " >> " + data.split(" ")[1],
+                    message: data.split("/pm " + data.split(" ")[1] + " ")[1]
+                });
+            } else {
+                messages.push({
+                    username: socket.username,
+                    message: data
+                });
+                socket.broadcast.emit('new message', {
+                    username: socket.username,
+                    message: data
+                });
+            }
         }
     });
 
