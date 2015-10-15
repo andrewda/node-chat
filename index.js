@@ -52,8 +52,12 @@ Object.prototype.getKeyByValue = function(value) {
 
 function isPM(message) {
     if (message.split(" ")[0].toLowerCase() !== undefined) {
-        if (message.split(" ")[1] !== undefined && message.split(" ")[2] !== undefined) {
-            return true;
+        if (message.split(" ")[0].toLowerCase() === '/pm') {
+            if (message.split(" ")[1] !== undefined && message.split(" ")[2] !== undefined) {
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
