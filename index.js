@@ -27,6 +27,7 @@ app.use(express.static(__dirname + '/public'));
 var router = express.Router();
 
 var usernames = {};
+var secure = {};
 var numUsers = 0;
 
 function makeid() {
@@ -197,6 +198,7 @@ io.on('connection', function(socket) {
                     username: socket.username,
                     message: data
                 });
+                
                 socket.broadcast.emit('new message', {
                     username: socket.username,
                     message: data
@@ -216,13 +218,16 @@ io.on('connection', function(socket) {
         
         socket.username = username;
         usernames[username] = userid;
+        secure[username] = socket.id;
         ++numUsers;
         addedUser = true;
         socket.emit('login', {
             numUsers: numUsers
         });
         
-        console.log(userid);
+        console.log('- ' + username);
+        console.log('    ' + userid);
+        console.log('    ' + socket.id);
         
         socket.broadcast.emit('user joined', {
             username: socket.username,
@@ -252,12 +257,12 @@ io.on('connection', function(socket) {
             });
         }
     });
-    
-    setInterval(function() {
-        socket.broadcast.emit('username update', {
-            usernames: usernames
-        });
-    }, 1000);
 });
+
+setInterval(function() {
+    io.emit('username update', {
+        usernames: usernames
+    });
+}, 1000);
 
 app.use('/api', router);
