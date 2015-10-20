@@ -129,6 +129,31 @@ io.on('connection', function(socket) {
         res.json({ success: true, username: query.username, id: usernames[query.username] });
     });
     
+    router.post('/pm', function(req, res) {
+        var query = res.req.client._httpMessage.req.query; //get the query
+        
+        if (query.id === undefined || query.id === '' || query.to === undefined || query.to === '' || query.message === undefined || query.message === '') {
+            res.json({ success: false, error: options.errors.missing_params });
+            return;
+        }
+        
+        var myusername = usernames.getKeyByValue(query.id);
+        var theirid = usernames[query.to];
+        
+        if (myusername !== undefined && theirid !== undefined) {
+            io.emit('new pm', {
+                to: theirid,
+                username: myusername + " >> " + query.to,
+                message: query.message
+            });
+        } else {
+            res.json({ success: false, error: options.errors.invalid_id });
+            return;
+        }
+        
+        res.json({ success: true });
+    });
+    
     router.post('/logout', function(req, res) {
         var query = res.req.client._httpMessage.req.query; //get the query
         

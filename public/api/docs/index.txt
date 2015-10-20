@@ -84,6 +84,34 @@ POST /api/typing
 -------------------------------------------------------------
 
 
+POST /api/pm
+
+    ARGUMENTS
+    ==============
+    - id
+        - the id received from /api/login
+    - to
+        - the username of the PM recipient
+    - message
+        - the message to be sent
+    
+    RESULT
+    ==============
+    - success
+        - whether the request was successfull or not
+    - error (?)
+        if success = false, the error that occurred
+        
+    EXAMPLE RESULT
+    ==============
+    {
+      "success": true
+    }
+
+
+-------------------------------------------------------------
+
+
 POST /api/logout
 
     ARGUMENTS
